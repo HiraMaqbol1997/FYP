@@ -11,8 +11,8 @@ from keras.utils.data_utils import get_file
 
 class FaceCV(object):
 
-    CASE_PATH = "haarcascade_frontalface_alt.xml"
-    WRN_WEIGHTS_PATH = "https://github.com/Tony607/Keras_age_gender/releases/download/V1.0/weights.18-4.06.hdf5"
+    Model = "haarcascade_frontalface_alt.xml"
+    CNN_Weights = "https://github.com/Tony607/Keras_age_gender/releases/download/V1.0/weights.18-4.06.hdf5"
 
 
     def __new__(cls, weight_file=None, depth=16, width=8, face_size=64):
@@ -24,7 +24,7 @@ class FaceCV(object):
         self.face_size = face_size
         self.model = WideResNet(face_size, depth=depth, k=width)()
         model_dir = os.path.join(os.getcwd(), "pretrained_models").replace("//", "\\")
-        fpath = get_file('weights.18-4.06.hdf5',self.WRN_WEIGHTS_PATH,cache_subdir=model_dir)
+        fpath = get_file('weights.18-4.06.hdf5',self.CNN_Weights,cache_subdir=model_dir)
         self.model.load_weights(fpath)
 
     @classmethod
@@ -67,7 +67,7 @@ class FaceCV(object):
         return resized_img, (x_a, y_a, x_b - x_a, y_b - y_a)
 
     def detect_face(self):
-        face_cascade = cv2.CascadeClassifier(self.CASE_PATH)
+        face_cascade = cv2.CascadeClassifier(self.Model)
         video_capture = cv2.VideoCapture(0)
         while True:
             if not video_capture.isOpened():
